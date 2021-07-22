@@ -1,5 +1,6 @@
 package com.microsoft.ml.spark.cognitive
 
+import com.azure.core.util.ExpandableStringEnum
 import com.microsoft.ml.spark.core.schema.SparkBindings
 import org.apache.spark.ml.ComplexParamsReadable
 
@@ -57,3 +58,20 @@ case class AssessmentV4(text: String,
 
 case class WarningsV4(text: String, warningCode: String)
 
+object PIIResponseV4 extends SparkBindings[TAResponseV4[PIIEntityCollectionV4]]
+
+ abstract class PIIEntityV4{ def text: String
+  def category: String
+  def subCategory: String
+  def confidenceScore: Double
+  def offset: Int
+  def length: Int
+}
+case class PIIEntityCollectionV4(text: String,
+                                 category: String,
+                                 subCategory: String,
+                                 confidenceScore: Double,
+                                 offset: Int,
+                                 length: Int,
+                                 redactedText: String,
+                                 warnings: List[WarningsV4]) extends PIIEntityV4
